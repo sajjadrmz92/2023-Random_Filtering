@@ -1,0 +1,38 @@
+import random
+with open('ma.en' , 'r' , encoding="utf-8") as maen , open('ma.fa' , 'r' , encoding="utf-8") as mafa , open('bleu.fa' , 'r' , encoding="utf-8") as bleus:
+    
+    maen_lines = maen.readlines()
+    mafa_lines = mafa.readlines()
+    
+    bleus_lines = bleus.readlines()
+    
+    tot_list = []
+    for i in range(len(maen_lines)): 
+                   
+        tot_list.append([bleus_lines[i] , maen_lines[i] , mafa_lines[i]])
+
+
+tot_list_sorted = []
+tot_list_sorted = sorted(tot_list, key=lambda x: x[0] , reverse=True)
+
+samples =[]
+for i in range(500000):
+    samples.append(random.randint(0, len(mafa_lines)))
+
+
+li_en = []
+li_fa = []
+for i in samples:
+    
+    li_en.append(tot_list_sorted[i][1])
+    li_fa.append(tot_list_sorted[i][2])
+    
+    
+random_ma_fa=open('random500k.fa','w',encoding="utf8")
+random_ma_en=open('random500k.en','w',encoding="utf8")
+for i in samples:
+    random_ma_fa.write(tot_list_sorted[i][2])
+    random_ma_en.write(tot_list_sorted[i][1]) 
+random_ma_en.close()
+random_ma_fa.close()
+
